@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Greedy Game</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <!-- These scripts will only be called into action whenwebsite is opened in IE8
+    These scripts bring support for HTML5 and CSS3 in it. The scripts are namely
+    1. html5shiv.js
+    2. respond.min.js -->
+    <!-- [if lt IE 9] >
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body ng-app="MusicApp">
+    <div class="container">
+        <div class="header">
+            <ul class="nav nav-pills pull-right">
+
+            </ul>
+            <h3 class="titleOfThePage">Music App <span class="punchline">Ads that people love!</span></h3>
+            <a href="#/tracks" class="btn btn-lg active indexButtons" role="button">Tracks</a> <span><a href="#/genres" class="btn btn-lg active indexButtons" role="button">Genres</a></span>
+        </div>
+        <div ng-view=""></div>
+        <div class="footer">
+            <p>Made with <span class="glyphicon glyphicon-heart" style="color:#f44336"></span> for AngularJS</p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="app.js"></script>
+    <script src="controllers.js"></script>
+    <script src="musicservice.js"></script>
+</body>
+</html>

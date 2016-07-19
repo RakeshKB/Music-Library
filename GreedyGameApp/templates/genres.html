@@ -1,0 +1,122 @@
+<!-- Page to display the Genres -->
+<div class="row">
+    <div class="col-xs-6 col-xs-offset-3 text-center">
+        <div class="title">Genres</div>
+    </div>
+    <div class="col-xs-6 col-xs-offset-3">
+        <div class="input-group">
+            <span class="input-group-addon remove_search_backgroungcolor">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+            <input type="search"  ng-model="params.text" class="form-control remove_border" style="font-style:italic" placeholder="Search title"/>
+            <span ng-if="params.text" class="input-group-addon remove_close_backgroungcolor" id="searchclear" ng-click="clearText()" uib-tooltip="clear">
+                <i class="glyphicon glyphicon-remove"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-xs-6 col-xs-offset-3 tablebody">
+        <table border="none" style="border-width:1px;border-color:white" class="table table-hover">
+            <thead>
+                <tr class="table_header">
+                    <th width="100">ID</th>
+                    <th>Title</th>
+                    <th>View/Edit</th>
+                </tr>
+            </thead>
+            <tbody class="table_body">
+                <tr ng-repeat="genre in genres | filter: params.text | limitTo: limit | limitTo: -5 track by $index">
+                    <td>{{genre.id}}</td>
+                    <td>{{genre.name}}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-success view" data-toggle="modal" data-target="#myViewGenreModal" ng-click="viewGenre(genre.id)">view</button><span style="padding-left:30px"></span>
+                        <button type="button" class="btn btn-sm btn-danger edit" data-toggle="modal" data-target="#myEditGenreModal" ng-click="editGenre(genre.id)">edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div> 
+</div>
+
+<div class="row">
+    <button type="button" class="btn btn-large btn-success center-block newtrack" data-toggle="modal" data-target="#myAddGenreModal">Add New Genre</button>
+</div><br>
+
+<div class="btn-group-wrap">
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-small btn-warning" ng-disabled="currentPage == 0" ng-click="decrementLimit()">Back</button> 
+        <button type="button" class="btn btn-small">{{currentPage+1}}/{{numberOfPages()}}</button> 
+        <button type="button" class="btn btn-small btn-warning" ng-disabled="currentPage >= genres.length/pageSize - 1" ng-click="incrementLimit()">Next</button>
+    </div>
+</div>
+
+<div class="modal fade" id="myAddGenreModal" tabindex="-1" role="dialog" aria-labelledby="myAddGenreModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myAddGenreModal">Add New Genre</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="nameField" class="col-xs-2">Name</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" id="nameField" ng-model="name" placeholder="enter title"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="column">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click="addNewGenre()">Add</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<div class="modal fade" id="myViewGenreModal" tabindex="-1" role="dialog" aria-labelledby="myViewGenreModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="viewTrack">id: {{currentGenre.id}}</div>
+                <div class="viewTrack"><p class="describeTrack">title: {{currentGenre.name}}</div>
+            </div>
+            <div class="column">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<div class="modal fade" id="myEditGenreModal" tabindex="-1" role="dialog" aria-labelledby="myEditGenreModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myEditGenreModal">Edit Genre</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="nameField" class="col-xs-2">Name</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" id="nameField" ng-model="name" placeholder="enter name"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="column">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click="updateGenre()">Update</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+

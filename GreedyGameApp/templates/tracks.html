@@ -1,0 +1,155 @@
+<!-- Page to display the Music tracks -->
+<div class="row">
+    <div class="col-xs-6 col-xs-offset-3 text-center">
+        <div class="title">Music Tracks</div>
+    </div>
+    <div class="col-xs-6 col-xs-offset-3">
+        <div class="input-group">
+            <span class="input-group-addon remove_search_backgroungcolor">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+            <input type="search"  ng-model="params.text" class="form-control remove_border" style="font-style:italic" placeholder="Search title"/>
+            <span ng-if="params.text" class="input-group-addon remove_close_backgroungcolor" id="searchclear" ng-click="clearText()" uib-tooltip="clear">
+                <i class="glyphicon glyphicon-remove"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-xs-6 col-xs-offset-3 tablebody">
+        <table border="none" style="border-width:1px;border-color:white" class="table table-hover">
+            <thead>
+                <tr class="table_header">
+                    <th>Title</th>
+                    <th>Rating</th>
+                    <th>View/Edit</th>
+                </tr>
+            </thead>
+            <tbody class="table_body">
+                <tr ng-repeat="track in tracks | filter: params.text | limitTo: limit | limitTo: -5 track by $index">
+                    <td>{{track.title}}</td>
+                    <!-- MouseOver to get the actual rating -->
+                    <td title="{{track.rating}}"><span><div class="repeat" n="{{track.rating[0]}}" ></div></span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-success view" data-toggle="modal" data-target="#myViewTrackModal" ng-click="viewTrack(track.id)">view</button><span style="padding-left:30px"></span>
+                        <button type="button" class="btn btn-sm btn-danger edit" data-toggle="modal" data-target="#myEditTrackModal" ng-click="editTrack(track.id)" >edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>        
+</div>
+<div class="row">
+    <button type="button" class="btn btn-large btn-success center-block newtrack" data-toggle="modal" data-target="#myAddTrackModal">Add New Track</button>
+</div><br>
+
+<div class="btn-group-wrap">
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-small btn-warning" ng-disabled="currentPage == 0" ng-click="decrementLimit()">Back</button> 
+        <button type="button" class="btn btn-small">{{currentPage+1}}/{{numberOfPages()}}</button> 
+        <button type="button" class="btn btn-small btn-warning" ng-disabled="currentPage >= tracks.length/pageSize - 1" ng-click="incrementLimit()">Next</button>
+    </div>
+</div>
+
+<div class="modal fade" id="myEditTrackModal" tabindex="-1" role="dialog" aria-labelledby="myEditTrackModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myEditTrackModal">Edit Track</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="titleField" class="col-xs-2">Title</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" id="titleField" ng-model="title" placeholder="enter title"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="genreField" class="col-xs-2">Genre</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" id="genreField" ng-model="genre" placeholder="enter genre"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ratingField" class="col-xs-2">Rating</label>
+                        <div class="col-xs-10">
+                            <input type="number" min="1" max="10" class="form-control" id="ratingField" ng-model="rating" placeholder="enter rating"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="column">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click="updateTrack()">Update</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<div class="modal fade" id="myViewTrackModal" tabindex="-1" role="dialog" aria-labelledby="myViewTrackModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myViewTrackModal"><h4>{{currentTrack}}</h4>
+            </div> -->
+            <div class="modal-body">
+                <div class="viewTrack">id: {{currentTrack.id}}</div>
+                <div class="viewTrack"><p class="describeTrack">title: {{currentTrack.title}}</div>
+                <div class="viewTrack" ng-if="currentTrack.genres">genres:
+                    <div class="viewTrack" ng-repeat="genre in currentTrack.genres">
+                        <h5>id: {{genre.id}} title: {{genre.name}}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+
+<div class="modal fade" id="myAddTrackModal" tabindex="-1" role="dialog" aria-labelledby="myAddTrackModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myAddTrackModal">Add New Track</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="titleField" class="col-xs-2">Title</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" id="titleField" ng-model="title" placeholder="enter title"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="genreField" class="col-xs-2">Genre</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" id="genreField" ng-model="genre" placeholder="enter genre"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ratingField" class="col-xs-2">Rating</label>
+                        <div class="col-xs-10">
+                            <input type="number" min="1" max="10" class="form-control" id="ratingField" ng-model="rating" placeholder="enter rating"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="column">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click="addNewTrack()">Update</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
